@@ -14,7 +14,7 @@ class Messages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: FirebaseAuth.instance.currentUser(),
+        future: FirebaseAuth.instance.getRedirectResult(),
         builder: (ctx, futureSnapshot) {
           if (futureSnapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -22,7 +22,7 @@ class Messages extends StatelessWidget {
             );
           }
           return StreamBuilder(
-              stream: Firestore.instance
+              stream: FirebaseFirestore.instance
                   .collection('chatRoom/$chatRoomId/chats')
                   .orderBy('createdAt', descending: true)
                   .snapshots(),

@@ -10,7 +10,7 @@ class ChatsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-          stream: Firestore.instance.collection('users').snapshots(),
+          stream: FirebaseFirestore.instance.collection('users').snapshots(),
           builder: (ctx, chatSnapshot) {
             if (chatSnapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -39,20 +39,20 @@ class ChatsList extends StatelessWidget {
                     onTap: () async {
                       // when you hit then go to that chatroom and show that
                       // conversations between two
-                      final user = await FirebaseAuth.instance.currentUser();
-                      final userData = await Firestore.instance
+                      final user = FirebaseAuth.instance.currentUser;
+                      final userData = await FirebaseFirestore.instance
                           .collection('users')
-                          .document(user.uid)
+                          .doc(user.uid)
                           .get();
                       final _chatRoomId = ChatRoomId.getID(
                           chatDocs[index]['username'], userData['username']);
 
                       print("chatRoomId : $_chatRoomId \nUser1: ${chatDocs[index]['username']} \nUser2: ${userData['username']}");
                      
-                       Firestore.instance
+                       FirebaseFirestore.instance
                             .collection("chatRoom")
-                            .document(_chatRoomId)
-                            .setData({
+                            .doc(_chatRoomId)
+                            .set({
                           "users": [
                             chatDocs[index]['username'],
                             userData['username'],

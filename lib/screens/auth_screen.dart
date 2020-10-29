@@ -20,7 +20,7 @@ class _AuthScreenState extends State<AuthScreen> {
     bool islogin,
     BuildContext context,
   ) async {
-    AuthResult authResult;
+    dynamic authResult;
     try {
       if (islogin) {
         authResult = await _auth
@@ -28,18 +28,24 @@ class _AuthScreenState extends State<AuthScreen> {
               email: email,
               password: password,
             )
-            .then((value) => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => MainScreen())));
+            .then(
+              (value) => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainScreen(),
+                ),
+              ),
+            );
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        Firestore.instance
+        FirebaseFirestore.instance
             .collection('users')
-            .document(authResult.user.uid)
-            .setData({
+            .doc(authResult.user.uid)
+            .set({
           'username': username,
           'email': email,
         });
