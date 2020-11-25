@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:whatsapp/screens/main_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import './screens/main_screen.dart';
 import './screens/auth_screen.dart';
 
 
@@ -31,25 +31,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (ctx, userSnapshot) {
-          if (userSnapshot.hasData) {
-            return MainScreen();
-          }
-          return AuthScreen();
-        },
-      ),
-      // body: AuthScreen(),
+    return FutureBuilder(
+      future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
+        return snapshot.hasData
+              ? MainScreen()
+              : AuthScreen();
+      },
     );
   }
 }
