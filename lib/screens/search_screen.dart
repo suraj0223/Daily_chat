@@ -14,10 +14,10 @@ class _SearchScreenState extends State<SearchScreen> {
   var listData;
 
   Future<void> _onSearch() async {
-    searchedUserData = await Firestore.instance
+    searchedUserData = await FirebaseFirestore.instance
         .collection("users")
         .where('username', isEqualTo: _textEditingController.text)
-        .getDocuments();
+        .get();
 
     setState(() {
       listData = searchedUserData;

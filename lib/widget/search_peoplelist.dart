@@ -12,10 +12,10 @@ class SearchPeopleList extends StatelessWidget {
   const SearchPeopleList({this.username, this.email});
 
   void sendMessage(BuildContext context, String userName) async {
-    final user = await FirebaseAuth.instance.currentUser();
-                      final myData = await Firestore.instance
+    final user =  FirebaseAuth.instance.currentUser;
+                      final myData = await FirebaseFirestore.instance
                           .collection('users')
-                          .document(user.uid)
+                          .doc(user.uid)
                           .get();
 
     List<String> users = [myData['username'], userName];
@@ -24,7 +24,7 @@ class SearchPeopleList extends StatelessWidget {
 
 print("chatRoomId : $_chatRoomId \nUser1: ${myData['username']} \nUser2: $userName");
     
-    Firestore.instance.collection("chatRoom").document(_chatRoomId).setData({
+    FirebaseFirestore.instance.collection("chatRoom").doc(_chatRoomId).set({
       "users": users,
       "chatRoomId": _chatRoomId,
     }).catchError((e) {

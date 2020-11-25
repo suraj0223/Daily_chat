@@ -17,13 +17,13 @@ class _NewMessageState extends State<NewMessage> {
   final _textController = TextEditingController();
   
   void _sendMessage() async {
-    final user = await FirebaseAuth.instance.currentUser();
-    final userData = await Firestore.instance
+    final user =  FirebaseAuth.instance.currentUser;
+    final userData = await FirebaseFirestore.instance
                     .collection('users')
-                    .document(user.uid)
+                    .doc(user.uid)
                     .get();
     final String chRoomId = widget.chatRoomId;
-    Firestore.instance.collection('chatRoom/$chRoomId/chats').add({
+    FirebaseFirestore.instance.collection('chatRoom/$chRoomId/chats').add({
       'text': _enteredMessage,
       'createdBy': userData['username'],
       'createdAt': Timestamp.now(),
