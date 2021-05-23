@@ -6,82 +6,93 @@ import '../widget/create_chatRoom/ChatRoomID.dart';
 import '../screens/search_screen.dart';
 
 class ChatsList extends StatelessWidget {
+
+  final user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('users').snapshots(),
           builder: (ctx, chatSnapshot) {
+            final List<DocumentSnapshot> chatDocs =
+                chatSnapshot.hasData ? chatSnapshot.data.docs : null;
             if (chatSnapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            }
-            final chatDocs = chatSnapshot.data.documents;
-            return ListView.builder(
-              itemCount: chatDocs.length,
-              itemBuilder: (ctx, index) => Column(
-                children: <Widget>[
-                  ListTile(
+            } else if (chatSnapshot.hasData &&
+                chatSnapshot.connectionState == ConnectionState.active) {
+              return ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.only(top: 3.0),
+                physics: ClampingScrollPhysics(),
+                children: chatDocs.map((doc) {
+                  return ListTile(
                     leading: CircleAvatar(
                       radius: 25,
                       backgroundColor: Color(0xFF25d366),
-                      // wanna add padding then most welcome
                     ),
                     title: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(chatDocs[index]['username']),
+                      child: Text(doc['username']),
                     ),
                     subtitle: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(chatDocs[index]['email']),
+                      child: Text(doc['email']),
                     ),
                     onTap: () async {
                       // when you hit then go to that chatroom and show that
                       // conversations between two
-                      final user = FirebaseAuth.instance.currentUser;
+                      // final user = FirebaseAuth.instance.currentUser;
+
                       final userData = await FirebaseFirestore.instance
                           .collection('users')
                           .doc(user.uid)
                           .get();
-                      final _chatRoomId = ChatRoomId.getID(
-                          chatDocs[index]['username'], userData['username']);
 
-                      print("chatRoomId : $_chatRoomId \nUser1: ${chatDocs[index]['username']} \nUser2: ${userData['username']}");
-                     
-                       FirebaseFirestore.instance
-                            .collection("chatRoom")
-                            .doc(_chatRoomId)
-                            .set({
-                          "users": [
-                            chatDocs[index]['username'],
-                            userData['username'],
-                          ],
-                          "chatRoomId": _chatRoomId,
-                        }).catchError((e) {
-                          print(e);
-                          // show use a dialog box
-                        });
-              
+                      final _chatRoomId = ChatRoomId.getID(
+                        doc['username'],
+                        userData['username'],
+                      );
+                      FirebaseFirestore.instance
+                          .collection("chatRoom")
+                          .doc(_chatRoomId)
+                          .set({
+                        "users": [
+                          doc['username'],
+                          userData['username'],
+                        ],
+                        "chatRoomId": _chatRoomId,
+                      }).catchError((e) {
+                        print(e);
+                        // show use a dialog box
+                      });
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (ctx) => ChatScreen(
-                            anonymousUser: chatDocs[index]['username'],
+                            anonymousUser: doc['username'],
                             chatId: _chatRoomId,
                           ),
                         ),
                       );
                     },
-                  ),
-                  Divider(
-                    indent: 70,
-                    endIndent: 25,
-                    color: Colors.black87,
-                  )
-                ],
-              ),
-            );
+                  );
+                }).toList(),
+              );
+            } else if (chatSnapshot.hasError) {
+              return Center(
+                child: Icon(
+                  Icons.error,
+                  size: 35,
+                  color: Colors.yellow,
+                ),
+              );
+            } else {
+              return Center(child: Text('Unexpected error'));
+            }
           }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF25d366),

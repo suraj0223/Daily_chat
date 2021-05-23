@@ -15,8 +15,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1,
-      length: 4,
+      initialIndex: 0,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF075e54),
@@ -25,16 +25,21 @@ class _MainScreenState extends State<MainScreen> {
           bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(child: Icon(Icons.camera_alt)),
               Tab(
-                child: Text('CHATS'),
-              ),
+                  child: Text(
+                'CHATS',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )),
               Tab(
-                child: Text('STATUS'),
-              ),
+                  child: Text(
+                'STATUS',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )),
               Tab(
-                child: Text('CALLS'),
-              ),
+                  child: Text(
+                'CALLS',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )),
             ],
           ),
           actions: <Widget>[
@@ -42,8 +47,8 @@ class _MainScreenState extends State<MainScreen> {
                 icon: Icon(Icons.search),
                 onPressed: () {
                   // add a new search screen
-                  Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SearchScreen()));
                 }),
             PopupMenuButton(
               shape: RoundedRectangleBorder(
@@ -52,25 +57,33 @@ class _MainScreenState extends State<MainScreen> {
               itemBuilder: (ctx) {
                 return [
                   PopupMenuItem(
-                    child: FlatButton(
+                    child: TextButton(
                       child: Text('New Chats'),
                       onPressed: () {
                         Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchScreen()));
                       },
                     ),
                   ),
                   PopupMenuItem(
-                    child: FlatButton(
+                    child: TextButton(
                       child: Text('Setting'),
-                      onPressed: () {},
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Under Maintainance'),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   PopupMenuItem(
-                    child: FlatButton(
+                    child: TextButton(
                       child: Text('Logout'),
-                      onPressed: () {
-                        FirebaseAuth.instance.signOut();
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -87,8 +100,6 @@ class _MainScreenState extends State<MainScreen> {
         ),
         body: TabBarView(
           children: [
-            //for camera
-            Container(),
             //for chats list
             ChatsList(),
             //for status list
