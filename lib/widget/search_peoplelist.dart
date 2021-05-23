@@ -12,18 +12,18 @@ class SearchPeopleList extends StatelessWidget {
   const SearchPeopleList({this.username, this.email});
 
   void sendMessage(BuildContext context, String userName) async {
-    final user =  FirebaseAuth.instance.currentUser;
-                      final myData = await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(user.uid)
-                          .get();
+    final user = FirebaseAuth.instance.currentUser;
+    final myData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
 
     List<String> users = [myData['username'], userName];
 
     String _chatRoomId = ChatRoomId.getID(myData['username'], userName);
 
-print("chatRoomId : $_chatRoomId \nUser1: ${myData['username']} \nUser2: $userName");
-    
+// print("chatRoomId : $_chatRoomId \nUser1: ${myData['username']} \nUser2: $userName");
+
     FirebaseFirestore.instance.collection("chatRoom").doc(_chatRoomId).set({
       "users": users,
       "chatRoomId": _chatRoomId,
@@ -45,39 +45,23 @@ print("chatRoomId : $_chatRoomId \nUser1: ${myData['username']} \nUser2: $userNa
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
+    return ListTile(
+      leading: CircleAvatar(),
+      title: Text(username, style: TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text(email),
+      trailing: Container(
+        padding: EdgeInsets.all(6),
+        child: Text('Message'),
+        decoration: BoxDecoration(
+          color: Color(0xFF25d366),
           borderRadius: BorderRadius.all(
-        Radius.circular(15),
-      )),
-      padding: EdgeInsets.all(10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Text(username, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(email),
-            ],
+            Radius.circular(20),
           ),
-          Spacer(),
-          GestureDetector(
-            onTap: () {
-              sendMessage(context, username);
-            },
-            child: Container(
-              padding: EdgeInsets.all(6),
-              child: Text('Message'),
-              decoration: BoxDecoration(
-                color: Color(0xFF25d366),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
+      onTap: () {
+        sendMessage(context, username);
+      },
     );
   }
 }

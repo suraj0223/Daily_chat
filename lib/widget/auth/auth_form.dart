@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 class AuthForm extends StatefulWidget {
   AuthForm(this.submitFrm);
   final void Function(
@@ -28,33 +30,42 @@ class _AuthFormState extends State<AuthForm> {
     FocusScope.of(context).unfocus();
     if (isvalid) {
       _formKey.currentState.save();
-
-      }
-      widget.submitFrm(
-        _userEmail.trim(),
-        _userPassword.trim(),
-        _userName.trim(),
-        _islogin,
-        context,
-      );
-    
+    }
+    widget.submitFrm(
+      _userEmail.trim(),
+      _userPassword.trim(),
+      _userName.trim(),
+      _islogin,
+      context,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     print('running..');
     return Scaffold(
-      backgroundColor: Color(0xFF075f54),
-      body: Center(
-        child: AnimatedContainer(
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(10),
-          duration: Duration(milliseconds: 800),
-          height: _islogin
-              ? MediaQuery.of(context).size.height * 0.45
-              : MediaQuery.of(context).size.height * 0.52,
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: SingleChildScrollView(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/loginbackground.jpg'),
+            alignment: Alignment.center,
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: Center(
+          child: AnimatedContainer(
+            decoration: BoxDecoration(
+                color: Colors.white12, borderRadius: BorderRadius.circular(20)),
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(10),
+            duration: Duration(milliseconds: 800),
+            height: _islogin
+                ? MediaQuery.of(context).size.height * 0.45
+                : MediaQuery.of(context).size.height * 0.52,
+            width: MediaQuery.of(context).size.width * 0.9,
             child: Form(
               key: _formKey,
               child: Column(
@@ -69,12 +80,15 @@ class _AuthFormState extends State<AuthForm> {
                           ? null
                           : "Enter correct email";
                     },
+                    cursorHeight: 25,
                     keyboardType: TextInputType.emailAddress,
+                    style: TextStyle(color: Colors.white, fontSize: 17),
                     decoration: InputDecoration(
-                        hintText: 'Email Address',
-                        hintStyle: TextStyle(color: Colors.white, fontSize: 17),
-                        errorStyle:
-                            TextStyle(color: Colors.pink, fontSize: 13)),
+                      hintText: 'Email Address',
+                      hintStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.5), fontSize: 17),
+                      errorStyle: TextStyle(color: Colors.pink, fontSize: 13),
+                    ),
                     onSaved: (value) {
                       _userEmail = value;
                     },
@@ -82,16 +96,19 @@ class _AuthFormState extends State<AuthForm> {
                   if (!_islogin)
                     TextFormField(
                       key: ValueKey('username'),
+                      cursorHeight: 25,
                       validator: (value) {
-                        if (value.isEmpty || value.length < 4)
+                        if (value.isEmpty || value.trim().length < 4)
                           return 'Too short';
                         return null;
                       },
+                      style: TextStyle(color: Colors.white, fontSize: 17),
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                           hintText: 'UserName',
-                          hintStyle:
-                              TextStyle(color: Colors.white, fontSize: 17),
+                          hintStyle: TextStyle(
+                              color: Colors.white.withOpacity(0.5),
+                              fontSize: 17),
                           errorStyle:
                               TextStyle(color: Colors.pink, fontSize: 13)),
                       onSaved: (value) {
@@ -100,16 +117,19 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                   TextFormField(
                     key: ValueKey('password'),
+                    cursorHeight: 25,
                     validator: (value) {
                       if (value.isEmpty || value.length < 7)
-                        return 'Password must be 7 character long';
+                        return 'Password must be 7 characters long';
                       return null;
                     },
+                    style: TextStyle(color: Colors.white, fontSize: 17),
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
                     decoration: InputDecoration(
                         hintText: 'Password',
-                        hintStyle: TextStyle(color: Colors.white, fontSize: 17),
+                        hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.5), fontSize: 17),
                         errorStyle:
                             TextStyle(color: Colors.pink, fontSize: 13)),
                     onSaved: (value) {
@@ -119,7 +139,7 @@ class _AuthFormState extends State<AuthForm> {
                   _islogin
                       ? Container(
                           alignment: Alignment.centerRight,
-                          child: FlatButton(
+                          child: TextButton(
                             child: Text(
                               'Forgot password',
                               style: TextStyle(
@@ -129,16 +149,12 @@ class _AuthFormState extends State<AuthForm> {
                             onPressed: () {},
                           ),
                         )
-                      : SizedBox(
-                          height: 20,
-                        ),
-                  Container(
-                    padding: EdgeInsets.only(top: 7, left: 7, right: 7),
-                    width: MediaQuery.of(context).size.width,
-                    child: FlatButton(
-                      child: Text(_islogin ? 'Login' : 'SignUp'),
-                      onPressed: _trySubmit,
-                      color: Color(0xFF25d366),
+                      : Padding(padding: EdgeInsets.all(3)),
+                  ElevatedButton(
+                    child: Text(_islogin ? 'Login' : 'SignUp'),
+                    onPressed: _trySubmit,
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF25d366),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                       ),
@@ -154,9 +170,9 @@ class _AuthFormState extends State<AuthForm> {
                             )
                           : Text('Already have an account?',
                               style: TextStyle(color: Colors.white)),
-                      FlatButton(
+                      TextButton(
                         child: Text(
-                          _islogin ? 'Register Now' : 'SignIn Now',
+                          _islogin ? 'Register Now' : 'SignIn now',
                           style: TextStyle(color: Colors.pinkAccent),
                         ),
                         onPressed: () {
@@ -172,7 +188,19 @@ class _AuthFormState extends State<AuthForm> {
             ),
           ),
         ),
+
+
+
+
+
+
+
+
+
+
       ),
+
+
     );
   }
 }

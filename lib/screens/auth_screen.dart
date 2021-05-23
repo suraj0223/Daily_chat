@@ -59,9 +59,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (err.message != null) {
         message = err.message;
       }
-
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           elevation: 30,
           behavior: SnackBarBehavior.floating,
           content: Text(
@@ -69,8 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
             style: TextStyle(color: Theme.of(context).errorColor),
           ),
           backgroundColor: Colors.black54,
-        ),
-      );
+        ));
     } catch (error) {
       print(error);
     }
@@ -79,6 +76,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: AuthForm(_submitAuthForm),
     );
   }

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
 class MessageBubble extends StatelessWidget {
   final String message;
   final bool isMe;
   final String username;
-  final Key key;
-
-  const MessageBubble({this.message, this.isMe, this.key, this.username});
+  const MessageBubble({this.message, this.isMe, this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +11,9 @@ class MessageBubble extends StatelessWidget {
       mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: <Widget>[
         Container(
-          alignment: Alignment.centerRight,
+          alignment: isMe? Alignment.centerRight : Alignment.centerLeft,
           decoration: BoxDecoration(
-            color: isMe ? Color(0xFF10f099) : Colors.grey[200],
+            color: isMe ? Color(0xFF10f099).withOpacity(0.5) : Colors.grey.withOpacity(0.5),
             borderRadius: BorderRadius.only(
               topLeft: isMe ? Radius.circular(20) : Radius.circular(0),
               topRight: isMe ? Radius.circular(0) : Radius.circular(20),
@@ -24,7 +21,7 @@ class MessageBubble extends StatelessWidget {
               bottomRight: Radius.circular(20),
             ),
           ),
-          width: MediaQuery.of(context).size.width * 0.58,
+          width: MediaQuery.of(context).size.width*0.8,
           padding: EdgeInsets.symmetric(
             vertical: 10,
             horizontal: 16,
@@ -33,18 +30,13 @@ class MessageBubble extends StatelessWidget {
             vertical: 4,
             horizontal: 8,
           ),
-          child: Column(
-            children: <Widget>[
-              Text(
-                username,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                message,
-                style: TextStyle(color: Colors.black),
-                textAlign: isMe ? TextAlign.end : TextAlign.start,
-              ),
-            ],
+          child: Text(
+            message,
+            style: TextStyle(color: Colors.black, ),
+            maxLines: 10,
+            overflow: TextOverflow.visible,
+            softWrap: true,
+            textAlign: isMe ? TextAlign.end : TextAlign.start,
           ),
         ),
       ],
