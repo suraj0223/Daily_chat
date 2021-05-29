@@ -7,6 +7,7 @@ import '../widget/status_list.dart';
 import '../widget/calls_list.dart';
 
 class MainScreen extends StatefulWidget {
+  static final mainScreenRoute = '/mainScreenRoute';
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -44,12 +45,13 @@ class _MainScreenState extends State<MainScreen> {
           ),
           actions: <Widget>[
             IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  // add a new search screen
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SearchScreen()));
-                }),
+              icon: Icon(Icons.search),
+              onPressed: () {
+                // add a new search screen
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SearchScreen()));
+              },
+            ),
             PopupMenuButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -84,12 +86,7 @@ class _MainScreenState extends State<MainScreen> {
                       child: Text('Logout'),
                       onPressed: () async {
                         await FirebaseAuth.instance.signOut();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AuthScreen(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, AuthScreen.authRoute);
                       },
                     ),
                   ),

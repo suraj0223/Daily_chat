@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/widget/chat/messages.dart';
 import 'package:whatsapp/widget/chat/new_message.dart';
-// import '../widget/chat/new_message.dart';
-// import '../widget/chat/messages.dart';
 
 class ChatScreen extends StatelessWidget {
+  static final chatScreenRoute = '/chatScreenRote';
+  
   final String anonymousUser;
   final String chatId;
 
@@ -16,8 +16,8 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
-        backgroundColor: Color(0xFF075e54),
         leading: Padding(
           padding: const EdgeInsets.only(
             left: 8.0,
@@ -25,7 +25,7 @@ class ChatScreen extends StatelessWidget {
           ),
           child: CircleAvatar(
             backgroundColor: Colors.black,
-            backgroundImage: null,
+            backgroundImage: AssetImage('assets/images/opening.jpg'),
           ),
         ),
         title: Text(anonymousUser),

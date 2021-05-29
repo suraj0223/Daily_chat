@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:whatsapp/screens/chat_screen.dart';
+import 'package:whatsapp/screens/search_screen.dart';
 import './screens/main_screen.dart';
 import './screens/auth_screen.dart';
 
@@ -29,6 +31,13 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: MyHomePage(),
+      routes: {
+        AuthScreen.authRoute: (ctx) => AuthScreen(),
+        MainScreen.mainScreenRoute: (ctx) => MainScreen(),
+        ChatScreen.chatScreenRoute: (ctx) => ChatScreen(),
+        SearchScreen.searchScreenRoute: (ctx) => SearchScreen(),
+        
+      },
     );
   }
 }
