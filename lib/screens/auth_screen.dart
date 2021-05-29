@@ -6,6 +6,7 @@ import '../widget/auth/auth_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthScreen extends StatefulWidget {
+  static final authRoute = "/AuthRoute";
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -28,14 +29,10 @@ class _AuthScreenState extends State<AuthScreen> {
               email: email,
               password: password,
             )
-            .then(
-              (value) => Navigator.pushReplacement(
+            .then((value) => Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => MainScreen(),
-                ),
-              ),
-            );
+                MaterialPageRoute(builder: (context) => MainScreen()),
+                (route) => false));
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
           email: email,
@@ -50,8 +47,10 @@ class _AuthScreenState extends State<AuthScreen> {
           'email': email,
         });
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MainScreen()));
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreen()),
+            (route) => false);
       }
     } on PlatformException catch (err) {
       var message = 'An Error occured, Please check your credentials!';
@@ -60,14 +59,14 @@ class _AuthScreenState extends State<AuthScreen> {
         message = err.message;
       }
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          elevation: 30,
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            message,
-            style: TextStyle(color: Theme.of(context).errorColor),
-          ),
-          backgroundColor: Colors.black54,
-        ));
+        elevation: 30,
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          message,
+          style: TextStyle(color: Theme.of(context).errorColor),
+        ),
+        backgroundColor: Colors.black54,
+      ));
     } catch (error) {
       print(error);
     }

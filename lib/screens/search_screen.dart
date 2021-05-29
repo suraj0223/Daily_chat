@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp/widget/search_peoplelist.dart';
 
 class SearchScreen extends StatefulWidget {
+  static final searchScreenRoute = '/searchScreenRote';
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }

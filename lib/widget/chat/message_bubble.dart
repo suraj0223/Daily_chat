@@ -21,7 +21,7 @@ class MessageBubble extends StatelessWidget {
               bottomRight: Radius.circular(20),
             ),
           ),
-          width: MediaQuery.of(context).size.width*0.8,
+          width: MediaQuery.of(context).size.width*0.6,
           padding: EdgeInsets.symmetric(
             vertical: 10,
             horizontal: 16,

@@ -6,7 +6,6 @@ import '../widget/create_chatRoom/ChatRoomID.dart';
 import '../screens/search_screen.dart';
 
 class ChatsList extends StatelessWidget {
-
   final user = FirebaseAuth.instance.currentUser;
 
   @override
@@ -23,65 +22,74 @@ class ChatsList extends StatelessWidget {
               );
             } else if (chatSnapshot.hasData &&
                 chatSnapshot.connectionState == ConnectionState.active) {
-              return ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.only(top: 3.0),
-                physics: ClampingScrollPhysics(),
-                children: chatDocs.map((doc) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Color(0xFF25d366),
-                    ),
-                    title: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(doc['username']),
-                    ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(doc['email']),
-                    ),
-                    onTap: () async {
-                      // when you hit then go to that chatroom and show that
-                      // conversations between two
-                      // final user = FirebaseAuth.instance.currentUser;
+              return chatDocs.length != 0
+                  ? ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(top: 3.0),
+                      physics: ClampingScrollPhysics(),
+                      children: chatDocs.map((doc) {
+                        return doc.id != FirebaseAuth.instance.currentUser.uid
+                            ? ListTile(
+                                leading: CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Color(0xFF25d366),
+                                  backgroundImage:
+                                      AssetImage('assets/images/opening.jpg'),
+                                ),
+                                title: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(doc['username']),
+                                ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(doc['email']),
+                                ),
+                                onTap: () async {
+                                  // when you hit then go to that chatroom and show that
+                                  // conversations between two
+                                  // final user = FirebaseAuth.instance.currentUser;
 
-                      final userData = await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(user.uid)
-                          .get();
+                                  final userData = await FirebaseFirestore
+                                      .instance
+                                      .collection('users')
+                                      .doc(user.uid)
+                                      .get();
 
-                      final _chatRoomId = ChatRoomId.getID(
-                        doc['username'],
-                        userData['username'],
-                      );
-                      FirebaseFirestore.instance
-                          .collection("chatRoom")
-                          .doc(_chatRoomId)
-                          .set({
-                        "users": [
-                          doc['username'],
-                          userData['username'],
-                        ],
-                        "chatRoomId": _chatRoomId,
-                      }).catchError((e) {
-                        print(e);
-                        // show use a dialog box
-                      });
+                                  final _chatRoomId = ChatRoomId.getID(
+                                    doc['username'],
+                                    userData['username'],
+                                  );
+                                  FirebaseFirestore.instance
+                                      .collection("chatRoom")
+                                      .doc(_chatRoomId)
+                                      .set({
+                                    "users": [
+                                      doc['username'],
+                                      userData['username'],
+                                    ],
+                                    "chatRoomId": _chatRoomId,
+                                  }).catchError((e) {
+                                    print(e);
+                                    // show use a dialog box
+                                  });
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) => ChatScreen(
-                            anonymousUser: doc['username'],
-                            chatId: _chatRoomId,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
-              );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (ctx) => ChatScreen(
+                                        anonymousUser: doc['username'],
+                                        chatId: _chatRoomId,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            : Container();
+                      }).toList(),
+                    )
+                  : Center(
+                      child: Text('No Users available right now!'),
+                    );
             } else if (chatSnapshot.hasError) {
               return Center(
                 child: Icon(
