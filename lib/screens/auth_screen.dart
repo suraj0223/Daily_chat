@@ -68,7 +68,36 @@ class _AuthScreenState extends State<AuthScreen> {
         backgroundColor: Colors.black54,
       ));
     } catch (error) {
-      print(error);
+      showDialog(
+          context: context,
+          builder: (ctx) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.greenAccent.withOpacity(0.4)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.admin_panel_settings_outlined,
+                        size: 120,
+                      ),
+                      Text('Please Enter the correct Credentials!'),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Okay'))
+                    ],
+                  )),
+            );
+          });
     }
   }
 

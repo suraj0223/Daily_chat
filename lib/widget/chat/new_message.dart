@@ -28,7 +28,10 @@ class _NewMessageState extends State<NewMessage> {
       'createdAt': Timestamp.now(),
       'userId': user.uid,
     });
-    _textController.clear();
+    setState(() {
+      _textController.clear();
+      _enteredMessage = '';
+    });
   }
 
   @override
@@ -74,7 +77,8 @@ class _NewMessageState extends State<NewMessage> {
                 ),
                 decoration: InputDecoration(
                   hintText: 'Type a message',
-                  hintStyle: TextStyle(fontSize: 20, color: Colors.white.withOpacity(0.5)),
+                  hintStyle: TextStyle(
+                      fontSize: 20, color: Colors.white.withOpacity(0.5)),
                   border: InputBorder.none,
                 ),
                 onChanged: (value) {
