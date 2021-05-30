@@ -56,9 +56,13 @@ class ChatsList extends StatelessWidget {
                                       .get();
 
                                   final _chatRoomId = ChatRoomId.getID(
-                                    doc['username'],
-                                    userData['username'],
+                                    currentUser:  user.uid,
+                                    anotherUser: doc.id
                                   );
+
+                                  // print("Current user : " + user.uid);
+                                  // print("another user : " + doc.id);
+
                                   FirebaseFirestore.instance
                                       .collection("chatRoom")
                                       .doc(_chatRoomId)

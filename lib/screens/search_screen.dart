@@ -15,38 +15,57 @@ class _SearchScreenState extends State<SearchScreen> {
   var searchedUserData;
   var listData;
 
+  List<String> searchKeys = ['username', 'email'];
+
   Future<void> _onSearch() async {
-    searchedUserData = await FirebaseFirestore.instance
-        .collection("users")
-        .where('username', isEqualTo: _textEditingController.text)
-        .get();
+    searchKeys.map((searchquerry) async {
+      searchedUserData = await FirebaseFirestore.instance
+          .collection("users")
+          .where(searchquerry, isEqualTo: _textEditingController.text)
+          .get();
+    });
+    // searchedUserData = await FirebaseFirestore.instance
+    //     .collection("users")
+    //     .where('username', isEqualTo: _textEditingController.text)
+    //     .get();
 
     setState(() {
       listData = searchedUserData;
     });
-    
+
     FocusScope.of(context).unfocus();
   }
 
   Widget displaySearchData(BuildContext ctx) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .where('username', isEqualTo: _textEditingController.text)
-          .snapshots(),
+      stream:
+          RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(_textEditingController.text)
+              ? FirebaseFirestore
+                  .instance
+                  .collection('users')
+                  .where('email', isEqualTo: _textEditingController.text)
+                  .snapshots()
+              : FirebaseFirestore.instance
+                  .collection('users')
+                  .where('username', isEqualTo: _textEditingController.text)
+                  .snapshots(),
       builder: (ctx, searchSnap) {
         final List<DocumentSnapshot> seachdoc =
             searchSnap.hasData ? searchSnap.data.docs : null;
         if (searchSnap.hasData &&
             searchSnap.connectionState == ConnectionState.active) {
-          return seachdoc.length == 0 ? Center(child: Text('No person with this name exist!')) : ListView(
-            children: seachdoc.map((querry) {
-              return SearchPeopleList(
-                email: querry['email'],
-                username: querry['username'],
-              );
-            }).toList(),
-          );
+          return seachdoc.length == 0
+              ? Center(child: Text('Search Users'))
+              : ListView(
+                  children: seachdoc.map((querry) {
+                    return SearchPeopleList(
+                      email: querry['email'],
+                      username: querry['username'],
+                      userId: querry.id,
+                    );
+                  }).toList(),
+                );
         } else if (searchSnap.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (!searchSnap.hasData) return Text('No User found');
@@ -83,7 +102,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   selectAll: true,
                 ),
                 decoration: InputDecoration(
-                    hintText: 'Search User by name',
+                    hintText: 'Search User by name or email',
                     hintStyle: TextStyle(
                         fontSize: 20, color: Colors.white.withOpacity(0.5)),
                     border: InputBorder.none,

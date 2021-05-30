@@ -3,7 +3,7 @@ import 'package:whatsapp/widget/chat/messages.dart';
 import 'package:whatsapp/widget/chat/new_message.dart';
 
 class ChatScreen extends StatelessWidget {
-  static final chatScreenRoute = '/chatScreenRote';
+  static final chatScreenRoute = '/chatScreenRoute';
   
   final String anonymousUser;
   final String chatId;

@@ -8,8 +8,9 @@ import '../widget/create_chatRoom/ChatRoomID.dart';
 class SearchPeopleList extends StatelessWidget {
   final String username;
   final String email;
+  final String userId;
 
-  const SearchPeopleList({this.username, this.email});
+  const SearchPeopleList({this.username, this.email, this.userId});
 
   void sendMessage(BuildContext context, String userName) async {
     final user = FirebaseAuth.instance.currentUser;
@@ -20,7 +21,14 @@ class SearchPeopleList extends StatelessWidget {
 
     List<String> users = [myData['username'], userName];
 
-    String _chatRoomId = ChatRoomId.getID(myData['username'], userName);
+    // String _chatRoomId = ChatRoomId.getID(
+    //   currentUser: myData['username'],
+    //   anotherUser: userName,
+    // );
+    final _chatRoomId = ChatRoomId.getID(
+      currentUser: user.uid,
+      anotherUser: userId,
+    );
 
 // print("chatRoomId : $_chatRoomId \nUser1: ${myData['username']} \nUser2: $userName");
 
