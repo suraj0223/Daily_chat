@@ -27,10 +27,11 @@ class _MainScreenState extends State<MainScreen> {
             indicatorColor: Colors.white,
             tabs: [
               Tab(
-                  child: Text(
-                'CHATS',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              )),
+                child: Text(
+                  'CHATS',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
               Tab(
                   child: Text(
                 'STATUS',

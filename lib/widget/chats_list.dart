@@ -32,9 +32,7 @@ class ChatsList extends StatelessWidget {
                             ? ListTile(
                                 leading: CircleAvatar(
                                   radius: 25,
-                                  backgroundColor: Color(0xFF25d366),
-                                  backgroundImage:
-                                      AssetImage('assets/images/opening.jpg'),
+                                  backgroundImage: AssetImage('assets/images/user.png'),
                                 ),
                                 title: Padding(
                                   padding: const EdgeInsets.only(left: 10.0),
@@ -56,9 +54,13 @@ class ChatsList extends StatelessWidget {
                                       .get();
 
                                   final _chatRoomId = ChatRoomId.getID(
-                                    doc['username'],
-                                    userData['username'],
+                                    currentUser:  user.uid,
+                                    anotherUser: doc.id
                                   );
+
+                                  // print("Current user : " + user.uid);
+                                  // print("another user : " + doc.id);
+
                                   FirebaseFirestore.instance
                                       .collection("chatRoom")
                                       .doc(_chatRoomId)

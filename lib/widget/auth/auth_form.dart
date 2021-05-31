@@ -42,7 +42,6 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   Widget build(BuildContext context) {
-    print('running..');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -188,19 +187,7 @@ class _AuthFormState extends State<AuthForm> {
             ),
           ),
         ),
-
-
-
-
-
-
-
-
-
-
       ),
-
-
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:whatsapp/widget/chat/messages.dart';
 import 'package:whatsapp/widget/chat/new_message.dart';
 
 class ChatScreen extends StatelessWidget {
-  static final chatScreenRoute = '/chatScreenRote';
+  static final chatScreenRoute = '/chatScreenRoute';
   
   final String anonymousUser;
   final String chatId;
@@ -24,8 +24,8 @@ class ChatScreen extends StatelessWidget {
             right: 2.0,
           ),
           child: CircleAvatar(
-            backgroundColor: Colors.black,
-            backgroundImage: AssetImage('assets/images/opening.jpg'),
+            
+            backgroundImage: AssetImage('assets/images/user.png', ),
           ),
         ),
         title: Text(anonymousUser),
