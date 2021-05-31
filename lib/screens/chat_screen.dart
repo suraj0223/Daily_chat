@@ -24,8 +24,8 @@ class ChatScreen extends StatelessWidget {
             right: 2.0,
           ),
           child: CircleAvatar(
-            backgroundColor: Colors.black,
-            backgroundImage: AssetImage('assets/images/opening.jpg'),
+            
+            backgroundImage: AssetImage('assets/images/user.png', ),
           ),
         ),
         title: Text(anonymousUser),

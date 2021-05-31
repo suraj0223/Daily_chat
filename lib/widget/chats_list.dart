@@ -32,9 +32,7 @@ class ChatsList extends StatelessWidget {
                             ? ListTile(
                                 leading: CircleAvatar(
                                   radius: 25,
-                                  backgroundColor: Color(0xFF25d366),
-                                  backgroundImage:
-                                      AssetImage('assets/images/opening.jpg'),
+                                  backgroundImage: AssetImage('assets/images/user.png'),
                                 ),
                                 title: Padding(
                                   padding: const EdgeInsets.only(left: 10.0),
