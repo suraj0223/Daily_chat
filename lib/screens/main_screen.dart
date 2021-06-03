@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp/screens/auth_screen.dart';
+import 'package:whatsapp/screens/profile_screen.dart';
 import 'package:whatsapp/screens/search_screen.dart';
 import '../widget/chats_list.dart';
 import '../widget/status_list.dart';
@@ -61,27 +62,24 @@ class _MainScreenState extends State<MainScreen> {
                 return [
                   PopupMenuItem(
                     child: TextButton(
-                      child: Text('New Chats'),
+                      child: Text('Profile'),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchScreen()));
+                        Navigator.of(context).pushNamed(ProfileScreen.profileRoute);
                       },
                     ),
                   ),
-                  PopupMenuItem(
-                    child: TextButton(
-                      child: Text('Setting'),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Under Maintainance'),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  // PopupMenuItem(
+                  //   child: TextButton(
+                  //     child: Text('Setting'),
+                  //     onPressed: () {
+                  //       ScaffoldMessenger.of(context).showSnackBar(
+                  //         const SnackBar(
+                  //           content: Text('Under Maintainance'),
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
                   PopupMenuItem(
                     child: TextButton(
                       child: Text('Logout'),

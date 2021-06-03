@@ -1,17 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/screens/call_screen.dart';
 import 'package:whatsapp/widget/chat/messages.dart';
 import 'package:whatsapp/widget/chat/new_message.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ChatScreen extends StatelessWidget {
   static final chatScreenRoute = '/chatScreenRoute';
   
   final String anonymousUser;
-  final String chatId;
+  final String chatRoomId;
 
   const ChatScreen({
     this.anonymousUser,
-    this.chatId,
+    this.chatRoomId,
   });
+
+    Future<void> onJoin(BuildContext context) async {
+    if (chatRoomId.isNotEmpty) {
+      await Permission.camera.request();
+      await Permission.microphone.request();
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CallScreen(
+            channelName: chatRoomId,
+          ),
+        ),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +51,11 @@ class ChatScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.video_call),
             iconSize: 30,
+            // onPressed: () {
+            //   // open device call function
+            // },
             onPressed: () {
-              // open device call function
+              onJoin(context);
             },
           ),
           IconButton(
@@ -70,8 +91,8 @@ class ChatScreen extends StatelessWidget {
         ),
         child: Column(
           children: <Widget>[
-            Expanded(child: Messages(chatId)),
-            NewMessage(chatId),
+            Expanded(child: Messages(chatRoomId)),
+            NewMessage(chatRoomId),
           ],
         ),
       ),

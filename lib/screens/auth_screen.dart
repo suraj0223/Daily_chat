@@ -15,9 +15,12 @@ class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
 
   void _submitAuthForm(
+    String username,
     String email,
     String password,
-    String username,
+    String phoneNumber,
+    String status,
+    String about,
     bool islogin,
     BuildContext context,
   ) async {
@@ -45,6 +48,9 @@ class _AuthScreenState extends State<AuthScreen> {
             .set({
           'username': username,
           'email': email,
+          'phonenumber': '+91' + phoneNumber,
+          'status': status,
+          'about': about
         });
 
         Navigator.pushAndRemoveUntil(

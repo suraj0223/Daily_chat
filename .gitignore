@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+.APP_ID
 
 # IntelliJ related
 *.iml
@@ -29,6 +30,7 @@
 .pub-cache/
 .pub/
 /build/
+/lib/constants/credential.dart
 
 # Web related
 lib/generated_plugin_registrant.dart

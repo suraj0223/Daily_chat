@@ -44,7 +44,7 @@ class SearchPeopleList extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (ctx) => ChatScreen(
-          chatId: _chatRoomId,
+          chatRoomId: _chatRoomId,
           anonymousUser: userName,
         ),
       ),

@@ -31,8 +31,11 @@ class ChatsList extends StatelessWidget {
                         return doc.id != FirebaseAuth.instance.currentUser.uid
                             ? ListTile(
                                 leading: CircleAvatar(
-                                  radius: 25,
-                                  backgroundImage: AssetImage('assets/images/user.png'),
+                                  foregroundColor: Colors.transparent,
+                                  backgroundImage: AssetImage(
+                                    "assets/images/user.png",
+                                  ),
+                                  radius: 25.0,
                                 ),
                                 title: Padding(
                                   padding: const EdgeInsets.only(left: 10.0),
@@ -54,9 +57,8 @@ class ChatsList extends StatelessWidget {
                                       .get();
 
                                   final _chatRoomId = ChatRoomId.getID(
-                                    currentUser:  user.uid,
-                                    anotherUser: doc.id
-                                  );
+                                      currentUser: user.uid,
+                                      anotherUser: doc.id);
 
                                   // print("Current user : " + user.uid);
                                   // print("another user : " + doc.id);
@@ -80,7 +82,7 @@ class ChatsList extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder: (ctx) => ChatScreen(
                                         anonymousUser: doc['username'],
-                                        chatId: _chatRoomId,
+                                        chatRoomId: _chatRoomId,
                                       ),
                                     ),
                                   );
