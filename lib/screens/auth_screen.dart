@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../screens/main_screen.dart';
@@ -15,6 +19,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
 
   void _submitAuthForm(
+    File userimage,
     String username,
     String email,
     String password,
@@ -42,6 +47,17 @@ class _AuthScreenState extends State<AuthScreen> {
           password: password,
         );
 
+        // ... writing a method for uploading an image to firebase
+
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('userProfileImages')
+            .child(authResult.user.uid + '.jpg');
+
+        await ref.putFile(userimage).whenComplete(() {});
+
+        var _profileurl = await ref.getDownloadURL();
+        
         FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user.uid)
@@ -50,7 +66,8 @@ class _AuthScreenState extends State<AuthScreen> {
           'email': email,
           'phonenumber': '+91' + phoneNumber,
           'status': status,
-          'about': about
+          'about': about,
+          'profileurl': _profileurl
         });
 
         Navigator.pushAndRemoveUntil(
@@ -94,7 +111,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         Icons.admin_panel_settings_outlined,
                         size: 120,
                       ),
-                      Text('Please Enter the correct Credentials!'),
+                      Text('Please check your Credentials!'),
                       ElevatedButton(
                           onPressed: () {
                             Navigator.of(context).pop();

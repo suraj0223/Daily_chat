@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp/widget/user_picker_image.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(this.submitFrm);
   final void Function(
+    File userimage,
     String username,
     String email,
     String password,
@@ -22,7 +26,7 @@ class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
 
   var _islogin = true;
-
+  File _userimage;
   String _userName = '';
   String _userEmail = '';
   String _userPassword = '';
@@ -30,16 +34,27 @@ class _AuthFormState extends State<AuthForm> {
   String _userPhoneNumber = '';
   String _status = 'Available';
 
+  void _pickedUserImage(File image) {
+    _userimage = image;
+  }
+
   void _trySubmit() {
     final isvalid = _formKey.currentState.validate();
-
     FocusScope.of(context).unfocus();
+
+    if (_userimage == null && !_islogin) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Pick an image to continue!')));
+      return;
+    }
+
     if (isvalid) {
       _formKey.currentState.save();
     }
     widget.submitFrm(
+      _userimage,
       _userName.trim(),
-       _userEmail.trim(),
+      _userEmail.trim(),
       _userPassword.trim(),
       _userPhoneNumber.trim(),
       _status.trim(),
@@ -68,11 +83,11 @@ class _AuthFormState extends State<AuthForm> {
             decoration: BoxDecoration(
                 color: Colors.white12, borderRadius: BorderRadius.circular(20)),
             alignment: Alignment.center,
-            padding: EdgeInsets.all(10),
-            duration: Duration(milliseconds: 900),
+            padding: EdgeInsets.all(15),
+            duration: Duration(milliseconds: 1200),
             height: _islogin
-                ? MediaQuery.of(context).size.height * 0.45
-                : MediaQuery.of(context).size.height * 0.65,
+                ? MediaQuery.of(context).size.height * 0.6
+                : MediaQuery.of(context).size.height * 0.8,
             width: MediaQuery.of(context).size.width * 0.9,
             child: Form(
               key: _formKey,
@@ -80,6 +95,7 @@ class _AuthFormState extends State<AuthForm> {
                 // mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  USerPickerImage(loginState: _islogin, pickImagefun:_pickedUserImage),
                   TextFormField(
                     key: ValueKey('email'),
                     validator: (value) {

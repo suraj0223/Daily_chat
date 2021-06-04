@@ -45,8 +45,10 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: 28,
         title: Text('My Profile'),
       ),
+      
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('users')
@@ -66,12 +68,20 @@ class ProfileScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Center(
-                        child: Image(
-                          height: 150,
-                          width: 150,
-                          image: AssetImage('assets/images/user.png'),
+                      Container(
+                        padding: EdgeInsets.all(30),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: currentUserData['profileurl'] == null
+                                ? AssetImage('assets/images/user.png')
+                                : NetworkImage(currentUserData['profileurl']),
+                          ),
                         ),
+                        height: 150,
+                        width: 150,
                       ),
                       customTextFormField(
                           labeltext: 'Name',

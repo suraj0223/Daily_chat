@@ -6,16 +6,18 @@ import 'package:permission_handler/permission_handler.dart';
 
 class ChatScreen extends StatelessWidget {
   static final chatScreenRoute = '/chatScreenRoute';
-  
+
   final String anonymousUser;
   final String chatRoomId;
+  final String profileUrl;
 
   const ChatScreen({
+    this.profileUrl,
     this.anonymousUser,
     this.chatRoomId,
   });
 
-    Future<void> onJoin(BuildContext context) async {
+  Future<void> onJoin(BuildContext context) async {
     if (chatRoomId.isNotEmpty) {
       await Permission.camera.request();
       await Permission.microphone.request();
@@ -30,39 +32,27 @@ class ChatScreen extends StatelessWidget {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(
-            left: 8.0,
-            right: 2.0,
-          ),
-          child: CircleAvatar(
-            
-            backgroundImage: AssetImage('assets/images/user.png', ),
-          ),
+        leadingWidth: 25,
+        title: Row(
+          children: [
+            CircleAvatar(
+                backgroundImage: profileUrl != null
+                    ? NetworkImage(profileUrl)
+                    : AssetImage('assets/images/user.png')),
+            SizedBox(width: 10),
+            Text(anonymousUser),
+          ],
         ),
-        title: Text(anonymousUser),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.video_call),
             iconSize: 30,
-            // onPressed: () {
-            //   // open device call function
-            // },
             onPressed: () {
               onJoin(context);
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.call),
-            iconSize: 30,
-            onPressed: () {
-              // open device call function
             },
           ),
           PopupMenuButton(

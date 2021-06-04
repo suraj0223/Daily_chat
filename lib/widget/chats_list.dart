@@ -28,13 +28,14 @@ class ChatsList extends StatelessWidget {
                       padding: EdgeInsets.only(top: 3.0),
                       physics: ClampingScrollPhysics(),
                       children: chatDocs.map((doc) {
-                        return doc.id != FirebaseAuth.instance.currentUser.uid
+                        return FirebaseAuth.instance.currentUser.uid != null &&
+                                doc.id != FirebaseAuth.instance.currentUser.uid
                             ? ListTile(
                                 leading: CircleAvatar(
                                   foregroundColor: Colors.transparent,
-                                  backgroundImage: AssetImage(
-                                    "assets/images/user.png",
-                                  ),
+                                  backgroundImage: doc['profileurl'] == null
+                                      ? AssetImage("assets/images/user.png")
+                                      : NetworkImage(doc['profileurl']),
                                   radius: 25.0,
                                 ),
                                 title: Padding(
@@ -81,6 +82,7 @@ class ChatsList extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (ctx) => ChatScreen(
+                                        profileUrl: doc['profileurl'],
                                         anonymousUser: doc['username'],
                                         chatRoomId: _chatRoomId,
                                       ),

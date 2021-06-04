@@ -9,8 +9,10 @@ class SearchPeopleList extends StatelessWidget {
   final String username;
   final String email;
   final String userId;
+  final String profileUrl;
 
-  const SearchPeopleList({this.username, this.email, this.userId});
+  const SearchPeopleList(
+      {this.username, this.email, this.userId, this.profileUrl});
 
   void sendMessage(BuildContext context, String userName) async {
     final user = FirebaseAuth.instance.currentUser;
@@ -54,7 +56,11 @@ class SearchPeopleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(),
+      leading: CircleAvatar(
+        backgroundImage: profileUrl != null
+            ? NetworkImage(profileUrl)
+            : AssetImage('assets/images/user.png'),
+      ),
       title: Text(username, style: TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Text(email),
       trailing: Container(

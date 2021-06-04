@@ -60,6 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
               : ListView(
                   children: seachdoc.map((querry) {
                     return SearchPeopleList(
+                      profileUrl: querry['profileurl'],
                       email: querry['email'],
                       username: querry['username'],
                       userId: querry.id,
@@ -77,7 +78,10 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Search People')),
+      appBar: AppBar(
+        leadingWidth: 27,
+        title: Text('Search People'),
+      ),
       body: Column(
         children: <Widget>[
           Flexible(
