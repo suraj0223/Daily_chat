@@ -1,16 +1,20 @@
-# WhatsApp_Clone 
-<img src="assets/images/logo_icon.png" width="150" height="150" />
+# ``WhatsApp_Clone (Daily Chat)``
 
+<img
+src="assets/images/appicon.png" width="150" height="150"
+/>
 
-A fully functioning whatsapp clone build with flutter and firebase. 
+A chat app made with Flutter as a frontend and Firebase as a backend
 
-`For starting a conversation with your friend, its necessary your friend should have a account in the app. Just hit on search button, floating below the screen and search for your friend name and get started.
-`
+```
+For starting a conversation with your friend, its necessary your friend should have a account in the app. Just hit on search button, floating below the screen and search for your friend name and get started.
+```
 
-## Setting up Project : 
+## Setting up Project ':'
+
 - Download and install Flutter SDK and setup your editor [from here](https://flutter.dev/docs/get-started/install/windows)
 
-- Clone the repo 
+- Clone the repo
   
   `$ git clone https://github.com/suraj0223/WhatsApp_Clone.git`
 
@@ -24,15 +28,22 @@ A fully functioning whatsapp clone build with flutter and firebase.
 
 - Application Starts running in your emulator
 
-### Features : 
+---
+
+### Features ':'
 
 - [X] Create a account
 - [x] signIn / SignUp
 - [x] Logout
 - [x] Search for peoples
 - [X] Conversation
+- [X] Video confrencing
+- [X] Internet Calling
+- [X] Set your Profile
+- [X] Chat Encryption
 
-### Upcoming : 
+### Upcoming ':'
+
 - [ ] Dark Theme
 - [ ] Login with Google
 - [ ] Staus Update
@@ -41,19 +52,37 @@ A fully functioning whatsapp clone build with flutter and firebase.
 ---
 
 ## ScreenShots
-- `Login Screen` : Enter your credential if you have already have an account.
-  - [X] Valid Email Id
-  - [X] Your Password
 
-<img src="assets/images/loginScreen.png" width="" height="350" />
+<div style="margin:auto;display:block"
 
-- `Home Screen` : After Successful validation of credentials user navigated to Home Screen.
+<div
 
-  <img src="assets/images/homeScreen.png" width="" height="380" style="float : leaf; margin: 10px 5px"/>
+<img
+src="assets/images/splash_screen.jpeg" width="" height="300"
+/>
+<img
+src="assets/images/signup_screen.jpg" width="" height="300"
+/>
+</div>
 
-- `Chat Screen` : Just Tap on below floating bar an automatic keyboard appears for generating a message. Type your message and hit on Green Arrow.
-<p>
-<img src="assets/images/chatScreen1.png" width="" height="400" style="float:left; margin: 10px 5px"/> 
+<div
 
-<img src="assets/images/chatScreen2.png" width="" height="400" style="float:right; margin: 10px 5px"  />
-</p>
+<img src="assets/images/homeScreen.jpeg" width="" height="300"
+/>
+<img src="assets/images/chatScreen.jpeg" width="" height="300"
+/>
+<img src="assets/images/video_confrencing.jpg" width=""  height="300"
+/>
+</div>
+
+---
+
+## Tools & Technology Used ':'
+
+- Agora SDK
+- Google Email Auth
+- Firestore storage
+- Firebase RealTime Database
+- AES Encryption
+- Flutter & Dart
+- Lottie
