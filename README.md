@@ -58,20 +58,20 @@ For starting a conversation with your friend, its necessary your friend should h
 <div
 
 <img
-src="assets/images/splash_screen.jpeg" width="" height="300"
+src="assets/images/splash_screen.jpeg" width="" height="500"
 />
 <img
-src="assets/images/signup_screen.jpg" width="" height="300"
+src="assets/images/signup_screen.jpg" width="" height="500"
 />
 </div>
 
 <div
 
-<img src="assets/images/homeScreen.jpeg" width="" height="300"
+<img src="assets/images/homeScreen.jpeg" width="" height="500"
 />
-<img src="assets/images/chatScreen.jpeg" width="" height="300"
+<img src="assets/images/chatScreen.jpeg" width="" height="500"
 />
-<img src="assets/images/video_confrencing.jpg" width=""  height="300"
+<img src="assets/images/video_confrencing.jpg" width=""  height="500"
 />
 </div>
 
