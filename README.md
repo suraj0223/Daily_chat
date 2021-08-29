@@ -6,9 +6,9 @@ src="assets/images/appicon.png" width="150" height="150"
 
 A chat app made with Flutter as a frontend and Firebase as a backend
 
-```
+`
 For starting a conversation with your friend, its necessary your friend should have a account in the app. Just hit on search button, floating below the screen and search for your friend name and get started.
-```
+`
 
 ## Setting up Project ':'
 
