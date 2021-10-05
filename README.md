@@ -9,11 +9,7 @@ In order to reduce the gap between the new college students we have to bring all
 ## 😮Wow Factor
 This project works on cross platform i.e natively available for both iOS and Android users, its has realtime live video confrencing with end to end chat encryption so that even the DB admin cannot read the chats. One can easily schedule any kind of group chat or have live video cofrencing and clear their doubts instantly. 
 
-<<<<<<< HEAD
 ## Setting up Project 🌟':'
-=======
-## 👽Setting up Project:
->>>>>>> 5baff8a9fdad090a415bd5ca199f3d69fdd1ccd4
 
 - Download and install Flutter SDK and setup your editor [from here](https://flutter.dev/docs/get-started/install/windows)
 
@@ -31,7 +27,6 @@ This project works on cross platform i.e natively available for both iOS and And
 
 - Application Starts running in your emulator
 
-<<<<<<< HEAD
 ---
 
 ### Features ✨':'
@@ -39,19 +34,11 @@ This project works on cross platform i.e natively available for both iOS and And
 - [X] Make posts and asks quizz
 - [x] signIn / SignUp & Logouts with Gmail
 - [x] conduct and play Quizzes with leaderboard
-=======
-## ✨Features:
-- [X] Create a account
-- [x] signIn / SignUp
-- [x] Logout
-- [X] live Conversation
->>>>>>> 5baff8a9fdad090a415bd5ca199f3d69fdd1ccd4
 - [X] Video confrencing
 - [X] voice Calling
 - [X] Chat Encryption
 - [X] Screen shot disables for quizz screen
 
-<<<<<<< HEAD
 ### Future work 🛠':'
 
 - [ ] Custom Theme
@@ -68,27 +55,6 @@ This project works on cross platform i.e natively available for both iOS and And
 <img src='assets/images/screenshot1.jpg' align='left' width='20%'>
 <img src='assets/images/screenshot2.jpg' align='left' width='20%'>
 <img src='assets/images/screenshot3.jpg' width='20%'>
-=======
-
-## 👀Upcoming:
-- [ ] Dark Theme
-- [ ] Login with Google
-- [ ] Staus Update
-- [ ] Profile Icon Update
-
-
-## 🏕ScreenShots
-<div style="margin:auto;display:block"
-
-<div
-
-<img
-src="assets/images/splash_screen.jpeg" width="" height="300"
-/>
-<img
-src="assets/images/signup_screen.jpg" width="" height="300"
-/>
->>>>>>> 5baff8a9fdad090a415bd5ca199f3d69fdd1ccd4
 </div>
 
 <div> 
@@ -96,15 +62,10 @@ src="assets/images/signup_screen.jpg" width="" height="300"
 <img src='assets/images/screenshot5.jpg' align='left' width='20%'>
 <img src='assets/images/screenshot6.jpg' align='' width='20%'>
 </div>
-<<<<<<< HEAD
 ---
 
 ## Tools & Technology Used ⚓':'
 
-=======
-
-## 🛠Tools & Technology Used:
->>>>>>> 5baff8a9fdad090a415bd5ca199f3d69fdd1ccd4
 - Agora SDK
 - Google Email Auth
 - Firestore storage
