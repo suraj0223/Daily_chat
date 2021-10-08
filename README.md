@@ -15,7 +15,7 @@ This project works on cross platform i.e natively available for both iOS and And
 
 - Clone the repo
   
-  - $ git clone https://github.com/suraj0223/WhatsApp_Clone.git
+  - $ git clone https://github.com/suraj0223/Daily_chat
 
   - $ cd WhatsApp_Clone
 
