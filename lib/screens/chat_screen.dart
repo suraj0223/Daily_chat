@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/screens/call_screen.dart';
+import 'package:whatsapp/screens/voiceChatScreen.dart';
 import 'package:whatsapp/widget/chat/messages.dart';
 import 'package:whatsapp/widget/chat/new_message.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -31,6 +32,24 @@ class ChatScreen extends StatelessWidget {
       );
     }
   }
+  Future<void> onJoinVoice(BuildContext context) async {
+    if (chatRoomId.isNotEmpty) {
+      await Permission.camera.request();
+      await Permission.microphone.request();
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VoiceChatScreen(
+            channelName: chatRoomId,
+            profileUrl: profileUrl, 
+            anonymousUser: anonymousUser
+          ),
+        ),
+      );
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +67,13 @@ class ChatScreen extends StatelessWidget {
           ],
         ),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.mic),
+            iconSize: 30,
+            onPressed: () {
+              onJoinVoice(context);
+            },
+          ),
           IconButton(
             icon: Icon(Icons.video_call),
             iconSize: 30,
