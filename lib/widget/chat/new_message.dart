@@ -2,19 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:audio_recorder/audio_recorder.dart';
-import 'package:file/file.dart';
-import 'package:file/local.dart';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io' as io;
-import 'dart:math';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:record_mp3/record_mp3.dart';
+// import 'package:audioplayer/audioplayer.dart';
 
 class NewMessage extends StatefulWidget {
   final chatRoomId;
-  NewMessage(
-    this.chatRoomId,
-  );
+  NewMessage(this.chatRoomId);
   @override
   _NewMessageState createState() => _NewMessageState();
 }
@@ -23,11 +20,8 @@ class _NewMessageState extends State<NewMessage> {
   var _enteredMessage = '';
   final _textController = TextEditingController();
 
-   Recording _recording = new Recording();
-  bool _isRecording = false;
-  Random random = new Random();
-  TextEditingController _controller = new TextEditingController();
-  final LocalFileSystem localFileSystem = LocalFileSystem();
+  ScrollController scrollController = ScrollController();
+  bool isPlayingMsg = false, isRecording = false, isSending = false;
 
   void _sendMessage() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -41,6 +35,7 @@ class _NewMessageState extends State<NewMessage> {
       'createdBy': userData['username'],
       'createdAt': Timestamp.now(),
       'userId': user.uid,
+      'type': 'text'
     });
     setState(() {
       _textController.clear();
@@ -48,57 +43,112 @@ class _NewMessageState extends State<NewMessage> {
     });
   }
 
-  _start() async {
-    try {
-      if (await AudioRecorder.hasPermissions) {
-        if (_controller.text != null && _controller.text != "") {
-          String path = _controller.text;
-          if (!_controller.text.contains('/')) {
-            io.Directory appDocDirectory =
-                await getApplicationDocumentsDirectory();
-            path = appDocDirectory.path + '/' + _controller.text;
-          }
-          print("Start recording: $path");
-          await AudioRecorder.start(
-              path: path, audioOutputFormat: AudioOutputFormat.AAC);
-        } else {
-          await AudioRecorder.start();
-        }
-        bool isRecording = await AudioRecorder.isRecording;
-        setState(() {
-          _recording = new Recording(duration: new Duration(), path: "");
-          _isRecording = isRecording;
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            new SnackBar(content: new Text("You must accept permissions")));
+  Future<bool> checkPermission() async {
+    if (!await Permission.microphone.isGranted) {
+      PermissionStatus status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) {
+        return false;
       }
-    } catch (e) {
-      print(e);
+    }
+    return true;
+  }
+
+  void startRecord() async {
+    bool hasPermission = await checkPermission();
+    if (hasPermission) {
+      recordFilePath = await getFilePath();
+
+      RecordMp3.instance.start(recordFilePath, (type) {
+        setState(() {});
+      });
+    } else {}
+    setState(() {});
+  }
+
+  void stopRecord() async {
+    bool s = RecordMp3.instance.stop();
+    if (s) {
+      setState(() {
+        isSending = true;
+      });
+      await uploadAudio();
+
+      setState(() {
+        isPlayingMsg = false;
+      });
     }
   }
 
-   _stop() async {
-    var recording = await AudioRecorder.stop();
-    print("Stop recording: ${recording.path}");
-    bool isRecording = await AudioRecorder.isRecording;
-    File file = localFileSystem.file(recording.path);
-    
-    final user = FirebaseAuth.instance.currentUser;
-    final userData = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .get();
-    final String chRoomId = widget.chatRoomId;
-    FirebaseFirestore.instance.collection("chatRoom/$chRoomId/chats").add({
-      'voice note': file.readAsBytes(),
-    });
+  String recordFilePath;
 
-    setState(() {
-      _recording = recording;
-      _isRecording = isRecording;
+  // Future<void> play() async {
+  //   if (recordFilePath != null && File(recordFilePath).existsSync()) {
+  //     AudioPlayer audioPlayer = AudioPlayer();
+  //     await audioPlayer.play(
+  //       recordFilePath,
+  //       isLocal: true,
+  //     );
+  //   }
+  // }
+
+  int i = 0;
+
+  Future<String> getFilePath() async {
+    Directory storageDirectory = await getApplicationDocumentsDirectory();
+    String sdPath = storageDirectory.path + "/record";
+    var d = Directory(sdPath);
+    if (!d.existsSync()) {
+      d.createSync(recursive: true);
+    }
+    return sdPath + "/test_${i++}.mp3";
+  }
+
+  uploadAudio() {
+    FirebaseStorage.instance
+        .ref()
+        .child(
+            "AudioMessages/audio${DateTime.now().millisecondsSinceEpoch.toString()}.jpg")
+        .putFile(File(recordFilePath))
+        .then((value) async {
+      print('uploaded to Firestore');
+      var audioURL = await value.ref.getDownloadURL();
+      String strVal = audioURL.toString();
+      await sendAudioMsg(strVal);
+    }).catchError((e) {
+      print(e);
     });
-    _controller.text = recording.path;
+  }
+
+  sendAudioMsg(String audioMsg) async {
+    if (audioMsg.isNotEmpty) {
+      final user = FirebaseAuth.instance.currentUser;
+      final userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      final String chRoomId = widget.chatRoomId;
+      await FirebaseFirestore.instance
+          .collection('chatRoom/$chRoomId/chats')
+          .add({
+        'audio': audioMsg,
+        'createdBy': userData['username'],
+        'createdAt': Timestamp.now(),
+        'userId': user.uid,
+        'type': 'audio'
+      }).then(
+        (value) => setState(
+          () {
+            isSending = false;
+          },
+        ),
+      );
+
+      scrollController.animateTo(0.0,
+          duration: Duration(milliseconds: 100), curve: Curves.bounceInOut);
+    } else {
+      print("Audio message error");
+    }
   }
 
   @override
@@ -116,10 +166,30 @@ class _NewMessageState extends State<NewMessage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.mic),
-              color: Colors.white,
-              onPressed:  _isRecording ? _stop : _start
+            GestureDetector(
+              child: Container(
+                margin: EdgeInsets.all(5),
+                child: Icon(
+                  Icons.mic,
+                  size: 30,
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.all(5),
+                decoration:
+                    BoxDecoration(shape: BoxShape.circle, color: Colors.green),
+              ),
+              onLongPress: () {
+                startRecord();
+                setState(() {
+                  isRecording = true;
+                });
+              },
+              onLongPressEnd: (details) {
+                stopRecord();
+                setState(() {
+                  isRecording = false;
+                });
+              },
             ),
             Expanded(
               child: TextField(
@@ -138,7 +208,7 @@ class _NewMessageState extends State<NewMessage> {
                   selectAll: true,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Type a message',
+                  hintText: isRecording ? 'Recording...' : 'Type a message',
                   hintStyle: TextStyle(
                       fontSize: 20, color: Colors.white.withOpacity(0.5)),
                   border: InputBorder.none,

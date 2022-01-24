@@ -32,9 +32,10 @@ dependencies:
   image_picker:
   firebase_storage:
   firebase_messaging:
-  audio_recorder: 
   path_provider: 
   dio: ^4.0.4
+  record_mp3:
+  audioplayers:
 
 
   # The following adds the Cupertino Icons font to your application.

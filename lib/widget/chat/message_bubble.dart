@@ -3,7 +3,8 @@ class MessageBubble extends StatelessWidget {
   final String message;
   final bool isMe;
   final String username;
-  const MessageBubble({this.message, this.isMe, this.username});
+  final Widget cwidget;
+  const MessageBubble({this.message, this.isMe, this.username, this.cwidget});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class MessageBubble extends StatelessWidget {
               bottomRight: Radius.circular(20),
             ),
           ),
-          width: MediaQuery.of(context).size.width*0.6,
+          // width: MediaQuery.of(context).size.width*0.6,
           padding: EdgeInsets.symmetric(
             vertical: 10,
             horizontal: 16,
@@ -30,14 +31,7 @@ class MessageBubble extends StatelessWidget {
             vertical: 4,
             horizontal: 8,
           ),
-          child: Text(
-            message,
-            style: TextStyle(color: Colors.black, ),
-            maxLines: 10,
-            overflow: TextOverflow.visible,
-            softWrap: true,
-            textAlign: isMe ? TextAlign.end : TextAlign.start,
-          ),
+          child: cwidget
         ),
       ],
     );

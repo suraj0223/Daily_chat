@@ -49,6 +49,7 @@ class ChatScreen extends StatelessWidget {
     }
   }
 
+  
 
 
   @override
@@ -115,13 +116,3 @@ class ChatScreen extends StatelessWidget {
     );
   }
 }
-
-// Firestore.instance
-//     .collection('chats/1wMmz9gOk28y1F9a2PID/messages')
-//     .snapshots()
-//     .listen((data) {
-//   // print(data.documents[0]['text]);
-//   data.documents.forEach((element) {
-//     print(element['text']);
-//   });
-// });
