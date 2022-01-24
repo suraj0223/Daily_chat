@@ -38,6 +38,7 @@ This project works on cross platform i.e natively available for both iOS and And
 - [X] voice Calling
 - [X] Chat Encryption
 - [X] Screen shot disables for quizz screen
+- [X] Send Audio messeges
 
 ### Future work 🛠':'
 
